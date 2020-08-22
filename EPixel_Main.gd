@@ -1,6 +1,7 @@
 extends Control
 
 var image
+var filePath = ""
 
 const IMAGE_DIMENSIONS = 32
 const COLOR_BLUE = Color(0, 0, 204, 255)
@@ -110,6 +111,15 @@ func _on_OpenButton_pressed():
 	$SaveLoadMenu/FileDialog.popup()
 
 func _on_SaveButton_pressed():
+	if(filePath == ""):
+		print("Showing save box...")
+		$SaveLoadMenu/FileDialog.mode = FileDialog.MODE_SAVE_FILE
+		$SaveLoadMenu/FileDialog.popup()
+	else:
+		$SaveLoadMenu/FileDialog.mode = FileDialog.MODE_SAVE_FILE
+		_on_FileDialog_file_selected(filePath)
+	
+func _on_SaveAsButton_pressed():
 	print("Showing save box...")
 	$SaveLoadMenu/FileDialog.mode = FileDialog.MODE_SAVE_FILE
 	$SaveLoadMenu/FileDialog.popup()
@@ -135,6 +145,7 @@ func _on_FileDialog_file_selected(path):
 		open_file.close()
 		image = EUtilsImage.EPXToImage(fileContents)
 		updateImage()
+	filePath = path
 
 
 func _on_TIPaletteButton_pressed():

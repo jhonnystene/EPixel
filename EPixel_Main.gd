@@ -1,11 +1,8 @@
 extends Control
 
-#onready var EUtilsUI = get_node("/root/PlayerVariables")
-
 var image
 
 const IMAGE_DIMENSIONS = 32
-
 const COLOR_BLUE = Color(0, 0, 204, 255)
 const COLOR_RED = Color(255, 0, 0, 255)
 const COLOR_BLACK = Color(0, 0, 0, 255)
@@ -23,7 +20,8 @@ const COLOR_GRAY = Color(121, 121, 121, 255)
 const COLOR_DARKGRAY = Color(78, 78, 78, 255)
 const COLOR_VERYDARKGRAY = Color(24, 24, 24, 255)
 
-const COLORS = [Color.blue, Color.red, Color.black, Color.magenta, Color.green, Color.orange, Color.brown, Color.navyblue, Color.lightblue, Color.yellow, Color.white, Color.lightgray, Color.gray, Color.darkgray]
+#const COLORS = [Color.blue, Color.red, Color.black, Color.magenta, Color.green, Color.orange, Color.brown, Color.navyblue, Color.lightblue, Color.yellow, Color.white, Color.lightgray, Color.gray, Color.darkgray]
+const COLORS = [Color.black, Color.darkred, Color.darkgreen, Color.olive, Color.navyblue, Color.purple, Color.teal, Color.silver, Color.gray, Color.red, Color.lime, Color.yellow, Color.blue, Color.fuchsia, Color.aqua, Color.white]
 var currentColor = Color.blue
 var pixel = preload("res://Pixel.tscn")
 

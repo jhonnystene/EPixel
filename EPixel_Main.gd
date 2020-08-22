@@ -20,8 +20,9 @@ const COLOR_GRAY = Color(121, 121, 121, 255)
 const COLOR_DARKGRAY = Color(78, 78, 78, 255)
 const COLOR_VERYDARKGRAY = Color(24, 24, 24, 255)
 
-#const COLORS = [Color.blue, Color.red, Color.black, Color.magenta, Color.green, Color.orange, Color.brown, Color.navyblue, Color.lightblue, Color.yellow, Color.white, Color.lightgray, Color.gray, Color.darkgray]
-const COLORS = [Color.black, Color.darkred, Color.darkgreen, Color.olive, Color.navyblue, Color.purple, Color.teal, Color.silver, Color.gray, Color.red, Color.lime, Color.yellow, Color.blue, Color.fuchsia, Color.aqua, Color.white]
+const COLORS_TI84CE = [Color.blue, Color.red, Color.black, Color.magenta, Color.green, Color.orange, Color.brown, Color.navyblue, Color.lightblue, Color.yellow, Color.white, Color.lightgray, Color.gray, Color.darkgray]
+const COLORS_WIN16 = [Color.black, Color.darkred, Color.darkgreen, Color.olive, Color.navyblue, Color.purple, Color.teal, Color.silver, Color.gray, Color.red, Color.lime, Color.yellow, Color.blue, Color.fuchsia, Color.aqua, Color.white]
+var COLORS = COLORS_WIN16
 var currentColor = Color.blue
 var pixel = preload("res://Pixel.tscn")
 
@@ -83,6 +84,12 @@ func _ready():
 	$SaveLoadMenu/FileDialog.access = FileDialog.ACCESS_FILESYSTEM
 	$SaveLoadMenu/FileDialog.set_filters(PoolStringArray(["*.epx ; EPixel Image Files"]))
 	
+	refreshColorPicker()
+	
+func refreshColorPicker():
+	for child in $ColorPicker.get_children():
+		child.queue_free()
+		
 	# Populate color picker
 	var colorPickerColor = load("res://ColorPickerColor.tscn")
 	var x = 0
@@ -128,3 +135,12 @@ func _on_FileDialog_file_selected(path):
 		open_file.close()
 		image = EUtilsImage.EPXToImage(fileContents)
 		updateImage()
+
+
+func _on_TIPaletteButton_pressed():
+	COLORS = COLORS_TI84CE
+	refreshColorPicker()
+
+func _on_Win16PaletteButton_pressed():
+	COLORS = COLORS_WIN16
+	refreshColorPicker()

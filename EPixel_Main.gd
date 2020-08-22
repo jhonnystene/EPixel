@@ -1,5 +1,7 @@
 extends Control
 
+#onready var EUtilsUI = get_node("/root/PlayerVariables")
+
 var image
 
 const IMAGE_DIMENSIONS = 32
@@ -62,69 +64,18 @@ func updateImage():
 
 func _process(delta):
 	if(Input.is_action_pressed("LeftClick")):
-		var mousePos = get_viewport().get_mouse_position()
-		
-		# Are we in the color picker range?
-		if(mousePos.x > $ColorPicker.rect_position.x && mousePos.x < $ColorPicker.rect_position.x + $ColorPicker.rect_size.x):
-			if(mousePos.y > $ColorPicker.rect_position.y && mousePos.y < $ColorPicker.rect_position.y + $ColorPicker.rect_size.y):
-				# Get mouse position relative to color picker
-				var mousePosRelative = mousePos - $ColorPicker.rect_position
-				
-				# Figure out which square the user clicked on
-				var mousePosSquare = Vector2(0, 0)
-				mousePosSquare.x = floor(mousePosRelative.x / 16)
-				mousePosSquare.y = floor(mousePosRelative.y / 16)
-				
-				# Figure out which color that is
-				var colorId = mousePosSquare.x
-				if(mousePosSquare.y == 1): # We're on the second layer.
-					colorId += 8
-				
-				if(colorId > len(COLORS) - 1):
-					print("Error: Color out of bounds!")
-				else:
-					currentColor = COLORS[colorId]
-					
-		# Are we in the image range?
-		if(mousePos.x > $ImageEditor.rect_position.x && mousePos.x < $ImageEditor.rect_position.x + $ImageEditor.rect_size.x):
-			if(mousePos.y > $ImageEditor.rect_position.y && mousePos.y < $ImageEditor.rect_position.y + $ImageEditor.rect_size.y):
-				# Get mouse position relative to image
-				var mousePosRelative = mousePos - $ImageEditor.rect_position
-				
-				# Figure out which square the user clicked on
-				var mousePosSquare = Vector2(0, 0)
-				mousePosSquare.x = floor(mousePosRelative.x / 16)
-				mousePosSquare.y = floor(mousePosRelative.y / 16)
-				
-				# Figure out which color that is
-				image[mousePosSquare.y][mousePosSquare.x] = currentColor
-				
-				#print("Clicked tile at " + str(mousePosSquare))
-				updateImage()
-
-func createImageExport():
-	print("Preparing image for export...")
-	var imageExport = ""
-	for y in range(0,len(image)):
-		for x in range(0,len(image[y])):
-			imageExport += str(image[y][x])
-			imageExport += "+"
-		imageExport += "-"
-	print("Image prepared.")
-	return imageExport
-
-func importImage(imgText):
-	print("Parsing image file...")
-	var yLines = imgText.split("-")
-	print(str(len(yLines)) + " lines")
-	print(str(len(yLines[0].split("+"))) + " colors per line")
-	for lineNumber in range(0,len(yLines)):
-		var colors = yLines[lineNumber].split("+")
-		for x in range(0,len(colors) - 1):
-			var color = colors[x].split(",")
-			image[lineNumber][x] = Color(color[0], color[1], color[2], color[3])
-	print("Done. Updating image...")
-	updateImage()
+		if(EUtilsUI.isCursorTouchingUINode($ColorPicker)):
+			var colorPickerTile = EUtilsUI.cursorTile($ColorPicker, Vector2(16, 16))
+			if(colorPickerTile.y == 1):
+				colorPickerTile.x += 8
+			if(colorPickerTile.x > len(COLORS) - 1):
+				print("Error: Color out of bounds!")
+			else:
+				currentColor = COLORS[colorPickerTile.x]
+		elif(EUtilsUI.isCursorTouchingUINode($ImageEditor)):
+			var pixel = EUtilsUI.cursorTile($ImageEditor, Vector2(16, 16))
+			image[pixel.y][pixel.x] = currentColor
+			updateImage()
 
 func _ready():
 	# Create a new image
@@ -148,7 +99,6 @@ func _ready():
 			x = 0
 			y += 1
 
-
 func _on_OpenButton_pressed():
 	print("Showing load box...")
 	$SaveLoadMenu/FileDialog.mode = FileDialog.MODE_OPEN_FILE
@@ -165,7 +115,7 @@ func _on_FileDialog_file_selected(path):
 		print("Saving...")
 		var save_file = File.new()
 		save_file.open(path, File.WRITE)
-		save_file.store_line(createImageExport())
+		save_file.store_line(EUtilsImage.imageToEPX(image))
 		save_file.close()
 	else:
 		print("Loading...")
@@ -178,4 +128,5 @@ func _on_FileDialog_file_selected(path):
 		while(open_file.get_position() < open_file.get_len()):
 			fileContents += open_file.get_line()
 		open_file.close()
-		importImage(fileContents)
+		image = EUtilsImage.EPXToImage(fileContents)
+		updateImage()

@@ -15,7 +15,6 @@ margin_right = 40.0
 margin_bottom = 40.0
 
 [node name="ImageBackground" type="ColorRect" parent="UIBackground"]
-visible = false
 margin_left = 256.0
 margin_top = 88.0
 margin_right = 768.0
@@ -33,7 +32,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="UIBackground/LeftBarBackground"]
+[node name="ColorsLabel" type="Label" parent="UIBackground/LeftBarBackground"]
 margin_top = 20.0
 margin_right = 256.0
 margin_bottom = 34.0
@@ -60,8 +59,11 @@ margin_left = 10.0
 margin_top = 10.0
 margin_right = 126.0
 margin_bottom = 41.0
-text = "EPixel v0.1a Alpha
+text = "EPixel v0.2a Alpha
 By jhonnystene"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="UIBackground/TopBarBackground"]
 margin_right = 1024.0

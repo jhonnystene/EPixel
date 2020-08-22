@@ -42,6 +42,7 @@ func clearImage():
 func newImage():
 	initImage()
 	createImage()
+	filePath = ""
 
 func createImage():
 	clearImage()

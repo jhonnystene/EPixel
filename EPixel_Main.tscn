@@ -96,6 +96,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="NewButton" type="Button" parent="SaveLoadMenu"]
+margin_left = 220.0
+margin_top = 6.0
+margin_right = 284.0
+margin_bottom = 38.0
+text = "New"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="SaveButton" type="Button" parent="SaveLoadMenu"]
 margin_left = 72.0
 margin_top = 6.0
@@ -109,6 +119,9 @@ margin_top = 6.0
 margin_right = 210.0
 margin_bottom = 38.0
 text = "Save As"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="FileDialog" type="FileDialog" parent="SaveLoadMenu"]
 margin_right = 600.0
@@ -138,7 +151,8 @@ margin_right = 256.0
 margin_bottom = 232.0
 
 [node name="TIPaletteButton" type="Button" parent="PaletteButtons"]
-margin_right = 256.0
+margin_left = 32.0
+margin_right = 224.0
 margin_bottom = 20.0
 text = "TI-84 Plus CE"
 __meta__ = {
@@ -146,11 +160,16 @@ __meta__ = {
 }
 
 [node name="Win16PaletteButton" type="Button" parent="PaletteButtons"]
-margin_top = 20.0
-margin_right = 256.0
-margin_bottom = 40.0
+margin_left = 32.0
+margin_top = 30.0
+margin_right = 224.0
+margin_bottom = 50.0
 text = "Windows 4-bit Color"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="SaveLoadMenu/OpenButton" to="." method="_on_OpenButton_pressed"]
+[connection signal="pressed" from="SaveLoadMenu/NewButton" to="." method="newImage"]
 [connection signal="pressed" from="SaveLoadMenu/SaveButton" to="." method="_on_SaveButton_pressed"]
 [connection signal="pressed" from="SaveLoadMenu/SaveAsButton" to="." method="_on_SaveAsButton_pressed"]
 [connection signal="file_selected" from="SaveLoadMenu/FileDialog" to="." method="_on_FileDialog_file_selected"]

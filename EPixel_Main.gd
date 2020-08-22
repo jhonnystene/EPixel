@@ -60,7 +60,12 @@ func createImage():
 		
 func updateImage():
 	for node in $ImageEditor.get_children():
-		node.color = image[node.rect_position.y / 16][node.rect_position.x / 16]
+		node.color = image[floor(node.rect_position.y / 16)][floor(node.rect_position.x / 16)]
+
+func updatePixel(x, y):
+	for node in $ImageEditor.get_children():
+		if(floor(node.rect_position.x / 16) == x && floor(node.rect_position.y / 16) == y):
+			node.color = image[floor(node.rect_position.y / 16)][floor(node.rect_position.x / 16)]
 
 func _process(delta):
 	if(Input.is_action_pressed("LeftClick")):
@@ -75,7 +80,7 @@ func _process(delta):
 		elif(EUtilsUI.isCursorTouchingUINode($ImageEditor)):
 			var pixel = EUtilsUI.cursorTile($ImageEditor, Vector2(16, 16))
 			image[pixel.y][pixel.x] = currentColor
-			updateImage()
+			updatePixel(pixel.x, pixel.y)
 
 func _ready():
 	# Create a new image

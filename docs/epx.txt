@@ -1,0 +1,6 @@
+EPixel (EPX) File Format v1 Documentation
+
+EPX files are a form of uncompressed images used by EPixel. The file format is very basic and includes no metadata.
+Every pixel is stored as RGBA values from 0 to 255. Each value in the pixel is separated by a comma. After the color data,
+the plus (+) symbol is used to mark the end of the pixel.
+The end of a line of pixels is marked with the minus (-) symbol.

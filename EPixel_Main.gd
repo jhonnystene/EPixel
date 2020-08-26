@@ -2,50 +2,23 @@ extends Control
 
 var image
 var filePath = ""
-
 const IMAGE_DIMENSIONS = 32
-const COLOR_BLUE = Color(0, 0, 204, 255)
-const COLOR_RED = Color(255, 0, 0, 255)
-const COLOR_BLACK = Color(0, 0, 0, 255)
-const COLOR_MAGENTA = Color(255, 51, 204, 255)
-const COLOR_GREEN = Color(0, 51, 0, 255)
-const COLOR_ORANGE = Color(255, 102, 0, 255)
-const COLOR_BROWN = Color(102, 51, 0, 255)
-const COLOR_NAVY = Color(0, 0, 102, 255)
-const COLOR_LTBLUE = Color(51, 153, 255, 255)
-const COLOR_YELLOW = Color(255, 255, 0, 255)
-const COLOR_WHITE = Color(255, 255, 255, 255)
-const COLOR_LTGRAY = Color(190, 190, 190, 255)
-const COLOR_MEDGRAY = Color(154, 154, 154, 255)
-const COLOR_GRAY = Color(121, 121, 121, 255)
-const COLOR_DARKGRAY = Color(78, 78, 78, 255)
-const COLOR_VERYDARKGRAY = Color(24, 24, 24, 255)
 
 const COLORS_TI84CE = [Color.blue, Color.red, Color.black, Color.magenta, Color.green, Color.orange, Color.brown, Color.navyblue, Color.lightblue, Color.yellow, Color.white, Color.lightgray, Color.gray, Color.darkgray]
 const COLORS_WIN16 = [Color.black, Color.darkred, Color.darkgreen, Color.olive, Color.navyblue, Color.purple, Color.teal, Color.silver, Color.gray, Color.red, Color.lime, Color.yellow, Color.blue, Color.fuchsia, Color.aqua, Color.white]
 var COLORS = COLORS_WIN16
 var currentColor = Color.blue
 var pixel = preload("res://Pixel.tscn")
-
-func initImage():
-	image = [] # Empty image variable
-	for y in range(0, IMAGE_DIMENSIONS): # Loop through all y positions
-		var yArray = [] # Create an empty array
-		for x in range(0, IMAGE_DIMENSIONS): # Loop through all x positions
-			yArray.append(Color(0, 0, 0)) # Add an empty color
-		image.append(yArray) # Add line to image
-
-func clearImage():
-	for child in $ImageEditor.get_children():
-		child.queue_free()
+var colorPickerColor = preload("res://ColorPickerColor.tscn")
 
 func newImage():
-	initImage()
-	createImage()
+	image = EUtilsImage.createEmptyImage(IMAGE_DIMENSIONS, IMAGE_DIMENSIONS)
 	filePath = ""
 
-func createImage():
-	clearImage()
+func initImageEditor():
+	for child in $ImageEditor.get_children():
+		child.queue_free()
+		
 	var xpos = 0
 	var ypos = 0
 	for y in range(0, len(image)):
@@ -86,6 +59,7 @@ func _process(delta):
 func _ready():
 	# Create a new image
 	newImage()
+	initImageEditor()
 	
 	# Set file dialog permissions
 	$SaveLoadMenu/FileDialog.access = FileDialog.ACCESS_FILESYSTEM
@@ -98,7 +72,6 @@ func refreshColorPicker():
 		child.queue_free()
 		
 	# Populate color picker
-	var colorPickerColor = load("res://ColorPickerColor.tscn")
 	var x = 0
 	var y = 0
 	for c in COLORS:
@@ -152,7 +125,6 @@ func _on_FileDialog_file_selected(path):
 		image = EUtilsImage.EPXToImage(fileContents)
 		updateImage()
 	filePath = path
-
 
 func _on_TIPaletteButton_pressed():
 	COLORS = COLORS_TI84CE
